@@ -1,15 +1,20 @@
-import { Tabs, Redirect } from "expo-router";
-import {useBoardingStore} from "../../stores/boardingStore";
+import { Stack } from "expo-router";
+import { Platform, UIManager } from "react-native";
 
-
-const TabsLayout = () => {
-    const {user} = useBoardingStore();
-
-    if (!user) {
-        return <Redirect href={"/onboarding"} />;
+if (Platform.OS === "android") {
+    if (UIManager.setLayoutAnimationEnabledExperimental) {
+        UIManager.setLayoutAnimationEnabledExperimental(true);
     }
+}
 
-    return <Tabs />;
+const RootLayout = () => {
+    return <Stack
+        screenOptions={{
+            headerStyle: { backgroundColor: '#f4511e' },
+            headerTintColor: '#fff',
+            headerShown: false,}}
+    >
+    </Stack>
 };
 
-export default TabsLayout;
+export default RootLayout;

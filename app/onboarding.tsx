@@ -1,21 +1,26 @@
 import {View, Text, StyleSheet, TextInput, Button} from "react-native";
 import {useState} from "react";
 import {router} from "expo-router";
+import {useStore} from "zustand/react";
+import {useBoardingStore} from "../stores/boardingStore";
 
-export default function HomePage() {
-  const [name, setName] = useState<string>("");
+export default function OnboardingPage() {
+
   const [error, setError] = useState<boolean>(false);
+  const { user ,setUser} = useBoardingStore();
+
   function handleContinue (){
-    if(!name){
+    if(!user){
       return setError(true);
     }
-    return router.replace("/");
+    return router.replace("/recipes");
   }
   return (
     <View style={styles.container}>
       <Text style={styles.title} >Quel est votre nom ?</Text>
-      <TextInput style={styles.input} value={name} onChangeText={setName}></TextInput>
-      <Button style={styles.button} title="Continuer" onPress={handleContinue}/>
+      <TextInput style={styles.input} value={user} onChangeText={setUser}></TextInput>
+      {error &&  <Text style={styles.error} >Veuillez rentrer un nom.</Text>}
+      <Button  title="Continuer" onPress={handleContinue}/>
     </View>
   );
 }
@@ -40,8 +45,8 @@ const styles = StyleSheet.create({
     borderColor: "grey",
     borderRadius: 5,
     fontWeight: "bold",
-  },
-  button:{
-    // color:'grey',
+  },error:{
+    color:'red',
+    fontSize: 16,
   }
 });
